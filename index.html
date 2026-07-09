@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Logbook</title>
+<title>The Logbook — Viraj Gupta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Karla:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --desk:#23262b;
+    --desk-edge:#1b1d21;
     --paper:#f6efc9;
     --paper-dark:#eee3ae;
+    --card:#fffdf2;
     --rule:rgba(70,118,165,.28);
     --margin-red:#d15a4e;
     --ink:#232a45;
@@ -23,17 +25,110 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    background:var(--desk);
+    background:radial-gradient(ellipse at 50% -20%, #2b2f36 0%, var(--desk) 55%, var(--desk-edge) 100%);
     font-family:'Karla',sans-serif;
     color:var(--ink);
-    padding:48px 16px 96px;
+    min-height:100vh;
     -webkit-font-smoothing:antialiased;
   }
 
-  /* ---------- the pad ---------- */
-  .pad{
-    max-width:740px;
+  /* ================= desktop layout: desk with sidebar + pad ================= */
+  .desk{
+    max-width:1200px;
     margin:0 auto;
+    padding:56px 32px 96px;
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:48px;
+    align-items:start;
+  }
+
+  /* ---------- left column: index card stack ---------- */
+  .side{position:sticky;top:40px;display:flex;flex-direction:column;gap:28px}
+
+  .card{
+    background:var(--card);
+    border-radius:3px;
+    box-shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 26px rgba(0,0,0,.45);
+    padding:22px 22px 24px;
+    position:relative;
+  }
+  .card.tilt-l{transform:rotate(-.7deg)}
+  .card.tilt-r{transform:rotate(.5deg)}
+
+  .who h1{
+    font-family:'Kalam',cursive;
+    font-weight:700;
+    font-size:34px;
+    line-height:1.15;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+    border-bottom:3px double var(--ink);
+    display:inline-block;
+    padding-bottom:2px;
+    margin-bottom:10px;
+  }
+  .who p{font-size:15.5px;line-height:1.55;color:var(--ink-soft)}
+  .who b{color:var(--blue-ink)}
+
+  .socials{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+  .socials a{
+    font-family:'Courier Prime',monospace;
+    font-size:14px;
+    color:var(--blue-ink);
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    width:max-content;
+    border-bottom:1.5px solid rgba(34,66,168,.35);
+  }
+  .socials a:hover,.socials a:focus-visible{border-bottom-color:var(--blue-ink)}
+  .socials svg{width:15px;height:15px;fill:currentColor;flex:none}
+
+  .now{border:2px dashed var(--red-ink);background:var(--paper)}
+  .now .tape{
+    position:absolute;top:-12px;left:50%;
+    transform:translateX(-50%) rotate(1.5deg);
+    width:88px;height:20px;
+    background:rgba(210,200,150,.6);
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+  }
+  .now h2{
+    font-family:'Courier Prime',monospace;
+    font-size:12.5px;letter-spacing:.24em;
+    color:var(--red-ink);text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .now p{font-size:15px;line-height:1.6}
+  .now p em{color:var(--ink-soft)}
+
+  .filters{display:flex;flex-direction:column;gap:12px}
+  .filters .label{
+    font-family:'Courier Prime',monospace;
+    font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:rgba(246,239,201,.55);
+    padding-left:4px;
+  }
+  .filters button{
+    font-family:'Kalam',cursive;font-weight:700;
+    font-size:21px;text-transform:uppercase;letter-spacing:.04em;
+    background:transparent;color:var(--paper);
+    border:2.5px solid var(--paper);
+    border-radius:4px 7px 4px 8px;
+    padding:4px 16px 6px;
+    cursor:pointer;text-align:left;
+    transition:transform .12s ease, background .12s ease, color .12s ease;
+  }
+  .filters button:hover{transform:rotate(-1deg) translateX(2px)}
+  .filters button:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+  .filters button[aria-pressed="true"]{color:var(--ink);background:var(--paper)}
+  .filters button.f-build[aria-pressed="true"]{background:#b9c6f2;border-color:#b9c6f2;color:var(--blue-ink)}
+  .filters button.f-learn[aria-pressed="true"]{background:#bfe0cb;border-color:#bfe0cb;color:var(--green-ink)}
+  .filters button.f-live[aria-pressed="true"]{background:#f0c3b8;border-color:#f0c3b8;color:var(--red-ink)}
+
+  /* ---------- right column: the pad ---------- */
+  .pad{
     background:
       repeating-linear-gradient(
         to bottom,
@@ -45,163 +140,41 @@
       var(--paper);
     background-position:0 8px;
     border-radius:2px 2px 4px 4px;
-    box-shadow:0 1px 0 rgba(0,0,0,.35), 0 14px 40px rgba(0,0,0,.5);
+    box-shadow:0 1px 0 rgba(0,0,0,.35), 0 18px 48px rgba(0,0,0,.5);
     position:relative;
+    min-height:80vh;
   }
-  /* red margin line */
   .pad::before{
     content:"";
-    position:absolute;
-    top:0;bottom:0;
-    left:112px;
-    width:2px;
-    background:var(--margin-red);
-    opacity:.55;
+    position:absolute;top:0;bottom:0;left:128px;
+    width:2px;background:var(--margin-red);opacity:.55;
     pointer-events:none;
   }
-  /* gummed binding strip */
   .binding{
     background:var(--paper-dark);
     border-bottom:1px dashed rgba(35,42,69,.35);
     border-radius:2px 2px 0 0;
-    padding:10px 0 8px;
-    text-align:center;
+    padding:10px 0 8px;text-align:center;
     font-family:'Courier Prime',monospace;
-    font-size:11px;
-    letter-spacing:.22em;
-    color:var(--ink-soft);
-    text-transform:uppercase;
-    position:relative;
-    z-index:1;
+    font-size:11px;letter-spacing:.22em;
+    color:var(--ink-soft);text-transform:uppercase;
   }
+  .sheet{padding:var(--line) 56px calc(var(--line)*2) 156px}
 
-  .sheet{padding:calc(var(--line)*1) 40px calc(var(--line)*2) 136px}
-
-  /* ---------- header ---------- */
-  h1{
-    font-family:'Kalam',cursive;
-    font-weight:700;
-    font-size:clamp(34px,6vw,46px);
-    line-height:calc(var(--line)*2);
-    letter-spacing:.02em;
-    text-transform:uppercase;
-    color:var(--ink);
-    display:inline-block;
-    border-bottom:3px double var(--ink);
-    padding-bottom:2px;
-  }
-  .byline{
-    font-family:'Kalam',cursive;
-    font-size:19px;
-    color:var(--ink-soft);
-    line-height:var(--line);
-    margin-bottom:var(--line);
-  }
-  .byline b{color:var(--blue-ink)}
-
-  /* social links */
-  .socials{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px 18px;
-    line-height:var(--line);
-    margin-bottom:var(--line);
-  }
-  .socials a{
-    font-family:'Courier Prime',monospace;
-    font-size:14px;
-    color:var(--blue-ink);
-    text-decoration:none;
-    border-bottom:1.5px solid rgba(34,66,168,.4);
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-  }
-  .socials a:hover,.socials a:focus-visible{border-bottom-color:var(--blue-ink)}
-  .socials svg{width:15px;height:15px;fill:currentColor;flex:none}
-
-  /* ---------- now note ---------- */
-  .now{
-    border:2px dashed var(--red-ink);
-    border-radius:3px;
-    padding:calc(var(--line)*.5) 18px;
-    margin:var(--line) 0 calc(var(--line)*1.5);
-    transform:rotate(-.4deg);
-    background:rgba(255,255,255,.25);
-    position:relative;
-  }
-  .now .tape{
-    position:absolute;
-    top:-12px;left:50%;
-    transform:translateX(-50%) rotate(1.5deg);
-    width:88px;height:20px;
-    background:rgba(210,200,150,.55);
-    box-shadow:0 1px 2px rgba(0,0,0,.12);
-  }
-  .now h2{
-    font-family:'Courier Prime',monospace;
-    font-size:13px;
-    letter-spacing:.24em;
-    color:var(--red-ink);
-    text-transform:uppercase;
-    line-height:var(--line);
-  }
-  .now p{font-size:16px;line-height:var(--line);color:var(--ink)}
-  .now p em{color:var(--ink-soft)}
-
-  /* ---------- filters ---------- */
-  .filters{
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-    margin-bottom:calc(var(--line)*1.5);
-  }
-  .filters button{
-    font-family:'Kalam',cursive;
-    font-weight:700;
-    font-size:20px;
-    text-transform:uppercase;
-    letter-spacing:.04em;
-    background:transparent;
-    color:var(--ink);
-    border:2.5px solid var(--ink);
-    border-radius:4px 7px 4px 8px; /* hand-drawn box wobble */
-    padding:2px 16px 4px;
-    cursor:pointer;
-    line-height:var(--line);
-    transition:transform .12s ease;
-  }
-  .filters button:hover{transform:rotate(-1deg)}
-  .filters button:focus-visible{outline:3px solid var(--blue-ink);outline-offset:2px}
-  .filters button[aria-pressed="true"]{color:var(--paper);background:var(--ink)}
-  .filters button.f-build[aria-pressed="true"]{background:var(--blue-ink);border-color:var(--blue-ink)}
-  .filters button.f-learn[aria-pressed="true"]{background:var(--green-ink);border-color:var(--green-ink)}
-  .filters button.f-live[aria-pressed="true"]{background:var(--red-ink);border-color:var(--red-ink)}
-
-  /* ---------- entries ---------- */
-  .entry{
-    position:relative;
-    margin-bottom:calc(var(--line)*1.5);
-  }
+  .entry{position:relative;margin-bottom:calc(var(--line)*1.5)}
   .entry.hidden{display:none}
   .entry .date{
-    position:absolute;
-    left:-124px;
-    top:0;
-    width:96px;
+    position:absolute;left:-140px;top:0;width:108px;
     text-align:right;
     font-family:'Courier Prime',monospace;
-    font-size:12.5px;
-    line-height:var(--line);
+    font-size:12.5px;line-height:var(--line);
     color:var(--ink-soft);
   }
   .tag{
     display:inline-block;
     font-family:'Courier Prime',monospace;
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:.16em;
-    text-transform:uppercase;
+    font-size:12px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;
     line-height:var(--line);
   }
   .tag::before{content:"[ "} .tag::after{content:" ]"}
@@ -209,41 +182,35 @@
   .t-learn{color:var(--green-ink)}
   .t-live{color:var(--red-ink)}
   .entry h3{
-    font-family:'Kalam',cursive;
-    font-weight:700;
-    font-size:24px;
-    line-height:var(--line);
-    margin-bottom:0;
+    font-family:'Kalam',cursive;font-weight:700;
+    font-size:25px;line-height:var(--line);
   }
   .entry p{
-    font-size:16.5px;
-    line-height:var(--line);
-    color:var(--ink);
-    max-width:56ch;
+    font-size:16.5px;line-height:var(--line);
+    max-width:62ch;
   }
   .entry a{color:var(--blue-ink)}
-  .entry .note{
-    font-family:'Kalam',cursive;
-    font-size:17px;
-    color:var(--ink-soft);
-  }
+  .entry .note{font-family:'Kalam',cursive;font-size:17px;color:var(--ink-soft)}
 
   footer{
     text-align:center;
     font-family:'Courier Prime',monospace;
-    font-size:12px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--ink-soft);
-    line-height:var(--line);
-    padding-top:var(--line);
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);line-height:var(--line);
+    padding:var(--line) 0;
   }
 
-  @media (max-width:640px){
-    .pad::before{left:64px}
-    .sheet{padding-left:80px;padding-right:20px}
-    .entry .date{left:-72px;width:56px;font-size:11px}
-    .filters button{font-size:17px;padding:1px 12px 3px}
+  /* ================= tablet & mobile: stack ================= */
+  @media (max-width:900px){
+    .desk{grid-template-columns:1fr;gap:32px;padding:32px 16px 72px}
+    .side{position:static}
+    .filters{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
+    .filters .label{width:100%;padding-left:0}
+    .filters button{font-size:17px;padding:2px 12px 4px}
+    .pad::before{left:72px}
+    .sheet{padding:var(--line) 20px calc(var(--line)*2) 88px}
+    .entry .date{left:-80px;width:62px;font-size:11px}
+    .who h1{font-size:29px}
   }
   @media (prefers-reduced-motion:reduce){
     .filters button{transition:none}
@@ -253,16 +220,16 @@
 </head>
 <body>
 
-<div class="pad">
-  <div class="binding">the logbook &nbsp;&middot;&nbsp; est. 2026</div>
-  <div class="sheet">
+<div class="desk">
 
-    <header>
+  <!-- ============ sidebar ============ -->
+  <aside class="side">
+
+    <div class="card who tilt-l">
       <h1>My Logbook</h1>
-      <p class="byline">kept by <b>Your Name</b> — building, learning &amp; living my way from Gurugram to Melbourne.</p>
-
+      <p>kept by <b>Viraj Gupta</b> — building, learning &amp; living my way from Gurugram to Melbourne.</p>
       <nav class="socials" aria-label="Find me elsewhere">
-        <a href="https://github.com/YOUR_USERNAME">
+        <a href="https://github.com/virajgupta3">
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
           github
         </a>
@@ -279,29 +246,35 @@
           email
         </a>
       </nav>
-    </header>
+    </div>
 
-    <aside class="now" aria-label="What I'm doing now">
+    <div class="card now tilt-r" aria-label="What I'm doing now">
       <span class="tape" aria-hidden="true"></span>
       <h2>Now — July 2026</h2>
       <p>Prepping the move to Melbourne for my Master of IT (AI) at UniMelb. Hitting the gym, reading, and teaching this website to hold my life. <em>Updated monthly.</em></p>
-    </aside>
+    </div>
 
     <div class="filters" role="group" aria-label="Filter entries">
+      <span class="label">Show me</span>
       <button class="f-all"   data-filter="all"   aria-pressed="true">All</button>
       <button class="f-build" data-filter="build" aria-pressed="false">Build</button>
       <button class="f-learn" data-filter="learn" aria-pressed="false">Learn</button>
       <button class="f-live"  data-filter="live"  aria-pressed="false">Live</button>
     </div>
 
-    <main id="log">
+  </aside>
+
+  <!-- ============ the pad ============ -->
+  <div class="pad">
+    <div class="binding">the logbook &nbsp;&middot;&nbsp; est. 2026</div>
+    <main class="sheet" id="log">
 
       <article class="entry" data-cat="build">
         <span class="date">09 Jul 2026</span>
         <span class="tag t-build">Build</span>
         <h3>This logbook goes live</h3>
         <p>First real thing on my GitHub: this site. One page, no framework, styled after the yellow legal pad my whole life plan started on. Everything I build, learn and live gets logged here from now.</p>
-        <p><a href="https://github.com/YOUR_USERNAME/logbook">→ source on github</a></p>
+        <p><a href="https://github.com/virajgupta3/virajgupta3.github.io">→ source on github</a></p>
       </article>
 
       <article class="entry" data-cat="learn">
@@ -320,9 +293,9 @@
       </article>
 
     </main>
-
     <footer>build · learn · live — one pad, one life</footer>
   </div>
+
 </div>
 
 <script>
