@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Logbook — Viraj Gupta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Karla:ital,wght@0,400;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --desk:#23262b;
+    --desk-edge:#1b1d21;
+    --paper:#f6efc9;
+    --paper-dark:#eee3ae;
+    --card:#fffdf2;
+    --rule:rgba(70,118,165,.28);
+    --margin-red:#d15a4e;
+    --ink:#232a45;
+    --ink-soft:#4a5170;
+    --blue-ink:#2242a8;
+    --green-ink:#2e7d4f;
+    --red-ink:#b8442f;
+    --line:28px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:radial-gradient(ellipse at 50% -20%, #2b2f36 0%, var(--desk) 55%, var(--desk-edge) 100%);
+    font-family:'Karla',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .desk{
+    max-width:1200px;margin:0 auto;
+    padding:56px 32px 96px;
+    display:grid;grid-template-columns:320px 1fr;gap:48px;
+    align-items:start;
+  }
+  .side{position:sticky;top:40px;display:flex;flex-direction:column;gap:28px}
+  .card{
+    background:var(--card);border-radius:3px;
+    box-shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 26px rgba(0,0,0,.45);
+    padding:22px 22px 24px;position:relative;
+  }
+  .card.tilt-l{transform:rotate(-.7deg)}
+  .card.tilt-r{transform:rotate(.5deg)}
+  .who h1{
+    font-family:'Kalam',cursive;font-weight:700;font-size:34px;line-height:1.15;
+    text-transform:uppercase;letter-spacing:.02em;
+    border-bottom:3px double var(--ink);display:inline-block;padding-bottom:2px;margin-bottom:10px;
+  }
+  .who p{font-size:15.5px;line-height:1.55;color:var(--ink-soft)}
+  .who b{color:var(--blue-ink)}
+  .socials{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+  .socials a{
+    font-family:'Courier Prime',monospace;font-size:14px;color:var(--blue-ink);
+    text-decoration:none;display:inline-flex;align-items:center;gap:8px;width:max-content;
+    border-bottom:1.5px solid rgba(34,66,168,.35);
+  }
+  .socials a:hover,.socials a:focus-visible{border-bottom-color:var(--blue-ink)}
+  .socials svg{width:15px;height:15px;fill:currentColor;flex:none}
+  .now{border:2px dashed var(--red-ink);background:var(--paper)}
+  .now .tape{
+    position:absolute;top:-12px;left:50%;
+    transform:translateX(-50%) rotate(1.5deg);
+    width:88px;height:20px;background:rgba(210,200,150,.6);
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+  }
+  .now h2{
+    font-family:'Courier Prime',monospace;font-size:12.5px;letter-spacing:.24em;
+    color:var(--red-ink);text-transform:uppercase;margin-bottom:6px;
+  }
+  .now p{font-size:15px;line-height:1.6}
+  .now p em{color:var(--ink-soft)}
+  .filters{display:flex;flex-direction:column;gap:12px}
+  .filters .label{
+    font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:rgba(246,239,201,.55);padding-left:4px;
+  }
+  .filters button{
+    font-family:'Kalam',cursive;font-weight:700;font-size:21px;
+    text-transform:uppercase;letter-spacing:.04em;
+    background:transparent;color:var(--paper);
+    border:2.5px solid var(--paper);border-radius:4px 7px 4px 8px;
+    padding:4px 16px 6px;cursor:pointer;text-align:left;
+    transition:transform .12s ease, background .12s ease, color .12s ease;
+  }
+  .filters button:hover{transform:rotate(-1deg) translateX(2px)}
+  .filters button:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+  .filters button[aria-pressed="true"]{color:var(--ink);background:var(--paper)}
+  .filters button.f-build[aria-pressed="true"]{background:#b9c6f2;border-color:#b9c6f2;color:var(--blue-ink)}
+  .filters button.f-learn[aria-pressed="true"]{background:#bfe0cb;border-color:#bfe0cb;color:var(--green-ink)}
+  .filters button.f-live[aria-pressed="true"]{background:#f0c3b8;border-color:#f0c3b8;color:var(--red-ink)}
+  .pad{
+    background:
+      repeating-linear-gradient(to bottom,
+        transparent 0, transparent calc(var(--line) - 1px),
+        var(--rule) calc(var(--line) - 1px), var(--rule) var(--line)),
+      var(--paper);
+    background-position:0 8px;
+    border-radius:2px 2px 4px 4px;
+    box-shadow:0 1px 0 rgba(0,0,0,.35), 0 18px 48px rgba(0,0,0,.5);
+    position:relative;min-height:80vh;
+  }
+  .pad::before{
+    content:"";position:absolute;top:0;bottom:0;left:128px;width:2px;
+    background:var(--margin-red);opacity:.55;pointer-events:none;
+  }
+  .binding{
+    background:var(--paper-dark);border-bottom:1px dashed rgba(35,42,69,.35);
+    border-radius:2px 2px 0 0;padding:10px 0 8px;text-align:center;
+    font-family:'Courier Prime',monospace;font-size:11px;letter-spacing:.22em;
+    color:var(--ink-soft);text-transform:uppercase;
+  }
+  .sheet{padding:var(--line) 56px calc(var(--line)*2) 156px}
+  .entry{position:relative;margin-bottom:calc(var(--line)*1.5)}
+  .entry.hidden{display:none}
+  .entry .date{
+    position:absolute;left:-140px;top:0;width:108px;text-align:right;
+    font-family:'Courier Prime',monospace;font-size:12.5px;line-height:var(--line);
+    color:var(--ink-soft);
+  }
+  .tag{
+    display:inline-block;font-family:'Courier Prime',monospace;
+    font-size:12px;font-weight:700;letter-spacing:.16em;
+    text-transform:uppercase;line-height:var(--line);
+  }
+  .tag::before{content:"[ "} .tag::after{content:" ]"}
+  .t-build{color:var(--blue-ink)}
+  .t-learn{color:var(--green-ink)}
+  .t-live{color:var(--red-ink)}
+  .entry h3{font-family:'Kalam',cursive;font-weight:700;font-size:25px;line-height:var(--line)}
+  .entry p{font-size:16.5px;line-height:var(--line);max-width:62ch}
+  .entry a{color:var(--blue-ink)}
+  .entry figure{margin:var(--line) 0;max-width:520px}
+  .entry img{
+    max-width:100%;display:block;
+    border:6px solid #fffdf2;
+    box-shadow:0 2px 10px rgba(0,0,0,.25);
+    transform:rotate(-.6deg);
+  }
+  .entry figure:nth-of-type(even) img{transform:rotate(.5deg)}
+  .entry figcaption{
+    font-family:'Kalam',cursive;font-size:15px;color:var(--ink-soft);
+    line-height:var(--line);margin-top:6px;
+  }
+  .loading{
+    font-family:'Courier Prime',monospace;font-size:14px;color:var(--ink-soft);
+    line-height:var(--line);
+  }
+  footer{
+    text-align:center;font-family:'Courier Prime',monospace;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);line-height:var(--line);padding:var(--line) 0;
+  }
+  @media (max-width:900px){
+    .desk{grid-template-columns:1fr;gap:32px;padding:32px 16px 72px}
+    .side{position:static}
+    .filters{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}
+    .filters .label{width:100%;padding-left:0}
+    .filters button{font-size:17px;padding:2px 12px 4px}
+    .pad::before{left:72px}
+    .sheet{padding:var(--line) 20px calc(var(--line)*2) 88px}
+    .entry .date{left:-80px;width:62px;font-size:11px}
+    .who h1{font-size:29px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .filters button{transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="desk">
+
+  <aside class="side">
+    <div class="card who tilt-l">
+      <h1>My Logbook</h1>
+      <p>kept by <b>Viraj Gupta</b> — logging my builds, experiences, thoughts and passions.</p>
+      <nav class="socials" aria-label="Find me elsewhere">
+        <a href="https://github.com/virajgupta3">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          github
+        </a>
+        <a href="https://www.hackerrank.com/profile/virajgupta201202">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0.6 1.6 4.3v7.4L8 15.4l6.4-3.7V4.3L8 .6zM6.1 4.6h1.1v3h1.6v-3h1.1v6.8H8.8v-2.8H7.2v2.8H6.1V4.6z"/></svg>
+          hackerrank
+        </a>
+        <a href="https://www.linkedin.com/in/virajgupta201201/">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2.84C1 1.82 1.8 1 3 1s1.97.82 1.97 1.84C4.97 3.83 4.2 4.68 3 4.68 1.8 4.68 1 3.83 1 2.84zM1.2 15V5.9h3.6V15H1.2zm5.5 0V5.9h3.45v1.24h.05c.48-.86 1.65-1.5 3.05-1.5C15.7 5.64 16 7.6 16 10.15V15h-3.6v-4.3c0-1.03-.02-2.35-1.43-2.35-1.44 0-1.66 1.12-1.66 2.27V15H6.7z"/></svg>
+          linkedin
+        </a>
+        <a href="https://www.instagram.com/viraj.gupta3/">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.44c2.14 0 2.39.01 3.23.05.78.04 1.2.17 1.49.28.37.14.64.32.92.6.28.28.45.54.6.92.11.28.24.71.28 1.49.04.84.05 1.09.05 3.22s-.01 2.39-.05 3.23c-.04.78-.17 1.2-.28 1.49-.14.37-.32.64-.6.92a2.5 2.5 0 0 1-.92.6c-.28.11-.71.24-1.49.28-.84.04-1.09.05-3.23.05s-2.39-.01-3.23-.05c-.78-.04-1.2-.17-1.49-.28a2.5 2.5 0 0 1-.92-.6 2.5 2.5 0 0 1-.6-.92c-.11-.28-.24-.71-.28-1.49C1.45 10.39 1.44 10.14 1.44 8s.01-2.39.05-3.23c.04-.78.17-1.2.28-1.49.14-.37.32-.64.6-.92.28-.28.54-.45.92-.6.28-.11.71-.24 1.49-.28.84-.04 1.09-.05 3.22-.05M8 0C5.83 0 5.55.01 4.7.05 3.85.09 3.27.22 2.76.42c-.53.2-.98.48-1.42.93-.45.44-.72.89-.93 1.42-.2.51-.33 1.09-.37 1.94C.01 5.55 0 5.83 0 8s.01 2.45.05 3.3c.04.85.17 1.43.37 1.94.2.53.48.98.93 1.42.44.45.89.72 1.42.93.51.2 1.09.33 1.94.37.85.04 1.13.05 3.3.05s2.45-.01 3.3-.05c.85-.04 1.43-.17 1.94-.37a3.9 3.9 0 0 0 1.42-.93c.45-.44.72-.89.93-1.42.2-.51.33-1.09.37-1.94.04-.85.05-1.13.05-3.3s-.01-2.45-.05-3.3c-.04-.85-.17-1.43-.37-1.94a3.9 3.9 0 0 0-.93-1.42A3.9 3.9 0 0 0 13.24.42c-.51-.2-1.09-.33-1.94-.37C10.45.01 10.17 0 8 0zm0 3.89a4.11 4.11 0 1 0 0 8.22 4.11 4.11 0 0 0 0-8.22zm0 6.78a2.67 2.67 0 1 1 0-5.34 2.67 2.67 0 0 1 0 5.34zm5.23-6.94a.96.96 0 1 1-1.92 0 .96.96 0 0 1 1.92 0z"/></svg>
+          instagram
+        </a>
+        <a href="mailto:virajgupta201201@gmail.com">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M.05 3.56C.2 2.68.96 2 1.9 2h12.2c.94 0 1.7.68 1.85 1.56L8 8.41.05 3.56zM0 5.3v6.8C0 13.15.85 14 1.9 14h12.2c1.05 0 1.9-.85 1.9-1.9V5.3L8.5 9.85a1 1 0 0 1-1 0L0 5.3z"/></svg>
+          email
+        </a>
+      </nav>
+    </div>
+
+    <div class="card now tilt-r" aria-label="What I'm doing now">
+      <span class="tape" aria-hidden="true"></span>
+      <h2>Now — <span id="nowDate"></span></h2>
+      <p><span id="nowText"></span> <em>Updated monthly.</em></p>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter entries">
+      <span class="label">Show me</span>
+      <button class="f-all"   data-filter="all"   aria-pressed="true">All</button>
+      <button class="f-build" data-filter="build" aria-pressed="false">Build</button>
+      <button class="f-learn" data-filter="learn" aria-pressed="false">Learn</button>
+      <button class="f-live"  data-filter="live"  aria-pressed="false">Live</button>
+    </div>
+  </aside>
+
+  <div class="pad">
+    <div class="binding">the logbook &nbsp;&middot;&nbsp; est. 2026</div>
+    <main class="sheet" id="log">
+      <p class="loading">loading the pad…</p>
+    </main>
+    <footer>build · learn · live — one pad, one life</footer>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const log=document.getElementById('log');
+
+  function fmtDate(iso){
+    const [y,m,d]=iso.split('-').map(Number);
+    return String(d).padStart(2,'0')+' '+MONTHS[m-1]+' '+y;
+  }
+  function el(tag,cls,text){
+    const n=document.createElement(tag);
+    if(cls)n.className=cls;
+    if(text!=null)n.textContent=text;
+    return n;
+  }
+  function figureFor(img){
+    const fig=el('figure');
+    const im=el('img');
+    im.src=img.path;
+    im.alt=img.caption||'';
+    im.loading='lazy';
+    fig.appendChild(im);
+    if(img.caption)fig.appendChild(el('figcaption',null,img.caption));
+    return fig;
+  }
+
+  function render(data){
+    document.getElementById('nowText').textContent=data.now||'';
+    document.getElementById('nowDate').textContent=data.nowDate||'';
+    log.innerHTML='';
+    const entries=(data.entries||[]).slice().sort((a,b)=>b.date.localeCompare(a.date));
+    if(!entries.length){
+      log.appendChild(el('p','loading','the pad is empty — first entry coming soon.'));
+      return;
+    }
+    for(const e of entries){
+      const art=el('article','entry');
+      art.dataset.cat=e.cat;
+      art.appendChild(el('span','date',fmtDate(e.date)));
+      art.appendChild(el('span','tag t-'+e.cat,e.cat));
+      art.appendChild(el('h3',null,e.title));
+
+      // normalize photos: new format = images:[{path,caption}], old = image/caption
+      const images=Array.isArray(e.images)?e.images:
+        (e.image?[{path:e.image,caption:e.caption||''}]:[]);
+      const used=new Set();
+
+      // body: blank line = new paragraph; a line that is just [1], [2]… = photo goes here
+      for(const block of (e.body||'').split(/\n+/).map(s=>s.trim()).filter(Boolean)){
+        const m=block.match(/^\[(\d+)\]$/);
+        if(m){
+          const idx=Number(m[1])-1;
+          if(images[idx]){art.appendChild(figureFor(images[idx]));used.add(idx);}
+        }else{
+          art.appendChild(el('p',null,block));
+        }
+      }
+      // any photos not placed inline go at the end
+      images.forEach((img,i)=>{if(!used.has(i))art.appendChild(figureFor(img));});
+
+      if(e.link){
+        const p=el('p');
+        const a=el('a',null,e.linkText||'→ link');
+        a.href=e.link;
+        p.appendChild(a);
+        art.appendChild(p);
+      }
+      log.appendChild(art);
+    }
+  }
+
+  fetch('entries.json?v='+Date.now())
+    .then(r=>{if(!r.ok)throw new Error(r.status);return r.json()})
+    .then(render)
+    .catch(()=>{log.innerHTML='';log.appendChild(el('p','loading','couldn\u2019t load entries.json — check it exists in the repo.'))});
+
+  document.querySelectorAll('.filters button').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.filters button').forEach(b=>b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      const f=btn.dataset.filter;
+      document.querySelectorAll('.entry').forEach(e=>{
+        e.classList.toggle('hidden',f!=='all'&&e.dataset.cat!==f);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
